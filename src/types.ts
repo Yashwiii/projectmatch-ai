@@ -29,6 +29,7 @@ export interface StudentProfile {
   linkedin: string;
   isCurrentUser?: boolean;
   email?: string;
+  collegeEmail?: string;
   rating?: number;
 }
 
@@ -53,6 +54,28 @@ export interface Project {
   isOwner?: boolean;
   aiExtracted?: boolean;
   status?: "Recruiting" | "In Progress" | "Full" | "Completed";
+}
+
+export type TeamRequestStatus = "Pending" | "Connected" | "Accepted" | "Declined";
+
+export interface TeamInvitation {
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  projectDescription: string;
+  senderId: string;
+  senderName: string;
+  recipientId: string;
+  recipientName: string;
+  recipientAvatar: string;
+  recipientDepartment?: string;
+  recipientYear?: string;
+  proposedRole: string;
+  matchScore: number;
+  status: TeamRequestStatus;
+  createdAt: string;
+  respondedAt?: string;
+  isRead?: boolean;
 }
 
 export interface MatchScoreBreakdown {
@@ -97,6 +120,20 @@ export interface TeamGapAnalysis {
     impactScore: number;
     matchScore: number;
   }[];
+}
+
+export interface TeamHealthBreakdown {
+  skillCoverage: number; // 0-100 (35%)
+  roleCoverage: number; // 0-100 (20%)
+  availabilityCompatibility: number; // 0-100 (15%)
+  experienceBalance: number; // 0-100 (15%)
+  domainAlignment: number; // 0-100 (15%)
+}
+
+export interface TeamHealthScore {
+  overallScore: number; // 0-100
+  breakdown: TeamHealthBreakdown;
+  aiInsight: string;
 }
 
 export interface AIAnalysisResult {

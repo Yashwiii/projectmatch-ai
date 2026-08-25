@@ -78,20 +78,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Welcome & Overview Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs transition-colors duration-150">
         <div>
           <div className="flex items-center space-x-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/80 px-2.5 py-0.5 rounded-full border border-indigo-100 dark:border-indigo-900">
               Student Dashboard
             </span>
             <span className="text-xs text-slate-400">•</span>
-            <span className="text-xs text-slate-500 font-medium">{currentUser.department}</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">{currentUser.department}</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
             Welcome back, {currentUser.name} 👋
           </h1>
-          <p className="text-sm text-slate-600 mt-1">
-            You have <strong className="text-slate-900 font-semibold">{projects.length} active projects</strong> and high compatibility with several campus candidates.
+          <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
+            You have <strong className="text-slate-900 dark:text-white font-semibold">{projects.length} active projects</strong> and high compatibility with several campus candidates.
           </p>
         </div>
 
@@ -108,16 +108,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <button
             id="dash-btn-create-project"
             onClick={onOpenCreateProject}
-            className="inline-flex items-center space-x-2 bg-white hover:bg-slate-50 text-slate-800 text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-300 shadow-xs transition-colors cursor-pointer"
+            className="inline-flex items-center space-x-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs transition-colors cursor-pointer"
           >
-            <PlusCircle className="w-4 h-4 text-indigo-600" />
+            <PlusCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
             <span>Create Project</span>
           </button>
         </div>
       </div>
 
       {/* Profile Completion Card */}
-      <div className="bg-gradient-to-r from-indigo-900 via-slate-900 to-slate-800 rounded-2xl p-6 text-white shadow-md">
+      <div className="bg-gradient-to-r from-indigo-900 via-slate-900 to-slate-800 rounded-2xl p-6 text-white shadow-md border border-indigo-900/50">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
           <div className="space-y-1.5">
             <div className="flex items-center space-x-2">
@@ -169,12 +169,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="lg:col-span-7 space-y-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <FolderKanban className="w-5 h-5 text-indigo-600" />
-              <h2 className="text-lg font-bold text-slate-900">Active Projects</h2>
+              <FolderKanban className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Active Projects</h2>
             </div>
             <button
               onClick={onNavigateToProjects}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 flex items-center space-x-1 cursor-pointer"
+              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center space-x-1 cursor-pointer"
             >
               <span>View All ({projects.length})</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -191,31 +191,31 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <div
                   key={project.id}
                   id={`dashboard-project-card-${project.id}`}
-                  className={`bg-white rounded-xl p-5 border transition-all ${
+                  className={`bg-white dark:bg-slate-900 rounded-xl p-5 border transition-all ${
                     isSelected
-                      ? "border-indigo-500 ring-2 ring-indigo-500/10 shadow-sm"
-                      : "border-slate-200 hover:border-slate-300"
+                      ? "border-indigo-500 ring-2 ring-indigo-500/10 dark:ring-indigo-500/20 shadow-sm"
+                      : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="bg-indigo-50 text-indigo-700 text-[11px] font-semibold px-2 py-0.5 rounded-md border border-indigo-100">
+                        <span className="bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 text-[11px] font-semibold px-2 py-0.5 rounded-md border border-indigo-100 dark:border-indigo-900">
                           {project.projectType}
                         </span>
-                        <span className="text-xs text-slate-500 font-medium">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                           {project.domain}
                         </span>
                         {isSelected && (
-                          <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200">
+                          <span className="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/80">
                             Active in Matcher
                           </span>
                         )}
                       </div>
-                      <h3 className="text-base font-bold text-slate-900">
+                      <h3 className="text-base font-bold text-slate-900 dark:text-white">
                         {project.title}
                       </h3>
-                      <p className="text-xs text-slate-600 mt-1 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 line-clamp-2 leading-relaxed">
                         {project.description}
                       </p>
                     </div>
@@ -226,23 +226,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     {project.requiredSkills.map((sk) => (
                       <span
                         key={sk}
-                        className="bg-slate-100 text-slate-700 text-[11px] px-2 py-0.5 rounded-md font-medium"
+                        className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] px-2 py-0.5 rounded-md font-medium"
                       >
                         {sk}
                       </span>
                     ))}
-                    <span className="text-[11px] text-slate-400 self-center">
+                    <span className="text-[11px] text-slate-400 dark:text-slate-500 self-center">
                       +{project.preferredSkills.length} preferred
                     </span>
                   </div>
 
                   {/* Footer Stats & Actions */}
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs">
-                    <div className="flex items-center space-x-4 text-slate-500">
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <div className="flex items-center space-x-4 text-slate-500 dark:text-slate-400">
                       <div className="flex items-center space-x-1.5">
                         <Users className="w-3.5 h-3.5 text-slate-400" />
                         <span>
-                          Roster: <strong className="text-slate-800 font-bold">{selectedCount}/{targetSize}</strong>
+                          Roster: <strong className="text-slate-800 dark:text-slate-200 font-bold">{selectedCount}/{targetSize}</strong>
                         </span>
                       </div>
                       <div className="flex items-center space-x-1.5">
@@ -257,7 +257,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           onSelectActiveProject(project.id);
                           onNavigateToMatching(project.id);
                         }}
-                        className="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1 cursor-pointer"
+                        className="bg-indigo-50 dark:bg-indigo-950/80 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1 cursor-pointer"
                       >
                         <Sparkles className="w-3.5 h-3.5" />
                         <span>Match Candidates</span>
@@ -274,17 +274,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="lg:col-span-5 space-y-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Sparkles className="w-5 h-5 text-indigo-600" />
-              <h2 className="text-lg font-bold text-slate-900">
+              <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
                 Top Matches for{" "}
-                <span className="text-indigo-600 font-bold truncate inline-block max-w-[140px] align-bottom">
+                <span className="text-indigo-600 dark:text-indigo-400 font-bold truncate inline-block max-w-[140px] align-bottom">
                   {activeProject?.title}
                 </span>
               </h2>
             </div>
             <button
               onClick={() => onNavigateToMatching(activeProject?.id)}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 cursor-pointer"
+              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 cursor-pointer"
             >
               See All →
             </button>
@@ -292,13 +292,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
           <div className="space-y-3.5">
             {candidateRecommendations.map(({ student, match }) => {
-              const isAdded = activeProject?.selectedTeamMemberIds.includes(student.id);
-
               return (
                 <div
                   key={student.id}
                   id={`dashboard-candidate-${student.id}`}
-                  className="bg-white rounded-xl p-4 border border-slate-200 hover:border-slate-300 transition-all shadow-2xs"
+                  className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-2xs"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center space-x-3">
@@ -309,14 +307,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       />
                       <div>
                         <div className="flex items-center space-x-2">
-                          <h3 className="font-bold text-slate-900 text-sm">
+                          <h3 className="font-bold text-slate-900 dark:text-white text-sm">
                             {student.name}
                           </h3>
-                          <span className="text-[11px] text-slate-500">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400">
                             {student.year}
                           </span>
                         </div>
-                        <p className="text-xs text-indigo-700 font-medium">
+                        <p className="text-xs text-indigo-700 dark:text-indigo-400 font-medium">
                           {match.roleFit}
                         </p>
                       </div>
@@ -324,38 +322,38 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
                     {/* Match Badge */}
                     <div className="text-right">
-                      <div className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <div className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80">
                         {match.overallScore}%
                       </div>
-                      <p className="text-[10px] text-slate-400 mt-0.5">Match</p>
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Match</p>
                     </div>
                   </div>
 
                   {/* Why this match short highlight */}
-                  <div className="mt-3 bg-slate-50 rounded-lg p-2.5 border border-slate-100 text-xs space-y-1">
-                    <div className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+                  <div className="mt-3 bg-slate-50 dark:bg-slate-800/60 rounded-lg p-2.5 border border-slate-100 dark:border-slate-800 text-xs space-y-1">
+                    <div className="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                       Key AI Rationale
                     </div>
-                    <div className="text-emerald-800 font-medium flex items-center space-x-1.5 text-[11px]">
+                    <div className="text-emerald-800 dark:text-emerald-300 font-medium flex items-center space-x-1.5 text-[11px]">
                       <span>{match.positiveReasons[0] || "✓ High technical alignment"}</span>
                     </div>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                    <span className="text-slate-500 font-medium">
+                  <div className="mt-3 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+                    <span className="text-slate-500 dark:text-slate-400 font-medium">
                       ⏱ {student.weeklyAvailability}h/wk availability
                     </span>
 
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => onViewStudentDetail(student)}
-                        className="text-slate-600 hover:text-slate-900 font-medium px-2 py-1 cursor-pointer"
+                        className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium px-2 py-1 cursor-pointer"
                       >
                         Profile
                       </button>
                       <button
                         onClick={() => onNavigateToMatching(activeProject?.id)}
-                        className="text-indigo-600 hover:text-indigo-700 font-semibold px-2 py-1 cursor-pointer"
+                        className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold px-2 py-1 cursor-pointer"
                       >
                         Explain Score →
                       </button>
@@ -367,30 +365,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
 
           {/* Recommended Projects Box */}
-          <div className="bg-slate-100/70 rounded-xl p-4 border border-slate-200">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center space-x-1.5">
-              <Compass className="w-3.5 h-3.5 text-indigo-600" />
+          <div className="bg-slate-100/70 dark:bg-slate-900/80 rounded-xl p-4 border border-slate-200 dark:border-slate-800">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2 flex items-center space-x-1.5">
+              <Compass className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
               <span>Projects seeking your skills</span>
             </h3>
-            <p className="text-xs text-slate-600 leading-relaxed mb-3">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-3">
               Other student leads are seeking Python, PyTorch & Deep Learning contributors.
             </p>
             <div className="space-y-2">
               {recommendedProjects.map((p) => (
                 <div
                   key={p.id}
-                  className="bg-white p-2.5 rounded-lg border border-slate-200 text-xs flex items-center justify-between"
+                  className="bg-white dark:bg-slate-800/80 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs flex items-center justify-between"
                 >
                   <div className="truncate pr-2">
-                    <span className="font-bold text-slate-800 block truncate">{p.title}</span>
-                    <span className="text-[11px] text-slate-500">{p.domain} · {p.projectType}</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200 block truncate">{p.title}</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">{p.domain} · {p.projectType}</span>
                   </div>
                   <button
                     onClick={() => {
                       onSelectActiveProject(p.id);
                       onNavigateToMatching(p.id);
                     }}
-                    className="text-indigo-600 font-semibold hover:underline shrink-0 cursor-pointer"
+                    className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline shrink-0 cursor-pointer"
                   >
                     View
                   </button>

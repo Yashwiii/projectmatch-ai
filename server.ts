@@ -33,17 +33,13 @@ app.get("/api/health", (req, res) => {
 function extractExplicitWeeklyHours(text: string): { weeklyCommitment: number; availabilityRequirement: string } | null {
   if (!text) return null;
 
-  // Patterns like:
-  // "8 hours/week", "8 hrs/week", "8 hours per week", "8 hrs/wk", "6-8 hours/week", "6–8 hrs/week", "10-15 hours/week"
-  const rangePattern = /(\d+)\s*(?:[-–—to]+)\s*(\d+)\s*(?:hours?|hrs?)(?:\s*(?:\/|per)\s*(?:week|wk))?/i;
-  const singlePattern = /(\d+)\s*(?:hours?|hrs?)\s*(?:\/|per)\s*(?:week|wk)/i;
-  const commitmentPattern = /(?:commitment|availability|time|effort)\s*(?:of|is|at|:)?\s*(\d+)\s*(?:hours?|hrs?)/i;
-
+  // 1. Range patterns: e.g. "6-8 hours/week", "6 to 8 hours per week", "6–8 hrs a week", "10-15 hrs/wk", "6 - 8 hours weekly"
+  const rangePattern = /(\d+)\s*(?:-|–|—|to)\s*(\d+)\s*(?:hours?|hrs?|h)\s*(?:(?:\/|per|a|each)\s*(?:week|wk)|weekly)?/i;
   const rangeMatch = text.match(rangePattern);
   if (rangeMatch) {
     const minH = parseInt(rangeMatch[1], 10);
     const maxH = parseInt(rangeMatch[2], 10);
-    if (!isNaN(maxH) && maxH > 0) {
+    if (!isNaN(maxH) && maxH > 0 && !isNaN(minH) && minH > 0) {
       return {
         weeklyCommitment: maxH,
         availabilityRequirement: `${minH}–${maxH} hours/week`,
@@ -51,6 +47,9 @@ function extractExplicitWeeklyHours(text: string): { weeklyCommitment: number; a
     }
   }
 
+  // 2. Single hour with per week / weekly / a week / each week / /week / /wk:
+  // e.g. "8 hours per week", "8 hours/week", "8 hrs/wk", "8h/week", "8 hours a week", "8 hrs weekly"
+  const singlePattern = /(\d+)\s*(?:hours?|hrs?|h)\s*(?:(?:\/|per|a|each)\s*(?:week|wk)|weekly)/i;
   const singleMatch = text.match(singlePattern);
   if (singleMatch) {
     const h = parseInt(singleMatch[1], 10);
@@ -62,6 +61,23 @@ function extractExplicitWeeklyHours(text: string): { weeklyCommitment: number; a
     }
   }
 
+  // 3. Weekly [commitment/effort/time/availability] of X hours:
+  // e.g. "weekly commitment of 8 hours", "weekly requirement: 8 hours", "weekly effort: 8 hrs"
+  const weeklyPrefixPattern = /(?:weekly|each week)\s*(?:commitment|availability|time|effort|requirement|work)?\s*(?:of|is|at|:)?\s*(\d+)\s*(?:hours?|hrs?|h)/i;
+  const weeklyPrefixMatch = text.match(weeklyPrefixPattern);
+  if (weeklyPrefixMatch) {
+    const h = parseInt(weeklyPrefixMatch[1], 10);
+    if (!isNaN(h) && h > 0) {
+      return {
+        weeklyCommitment: h,
+        availabilityRequirement: `${h} hours/week`,
+      };
+    }
+  }
+
+  // 4. Commitment / availability / requires X hours [per week/weekly]:
+  // e.g. "commitment of 8 hours", "commitment: 8 hours", "requires 8 hours per week", "dedicate 8 hours a week"
+  const commitmentPattern = /(?:commitment|availability|time|effort|requires?|requiring|expecting|dedicate)\s*(?:of|is|at|:|around|about)?\s*(\d+)\s*(?:hours?|hrs?|h)(?:\s*(?:\/|per|a|each)\s*(?:week|wk)|(?:\s*weekly))?/i;
   const commitMatch = text.match(commitmentPattern);
   if (commitMatch) {
     const h = parseInt(commitMatch[1], 10);

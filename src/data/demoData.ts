@@ -29,6 +29,7 @@ export const INITIAL_CURRENT_USER: StudentProfile = {
   linkedin: "https://linkedin.com/in/alex-rivera-cs",
   isCurrentUser: true,
   email: "alex.rivera@university.edu",
+  collegeEmail: "alex.rivera@college.edu",
   rating: 4.9,
 };
 
@@ -61,6 +62,7 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/elena-rostova",
     linkedin: "https://linkedin.com/in/elena-rostova-ds",
     email: "elena.r@university.edu",
+    collegeEmail: "elena.r@college.edu",
     rating: 4.95,
   },
   {
@@ -91,6 +93,7 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/marcuschen-design",
     linkedin: "https://linkedin.com/in/marcus-chen-hci",
     email: "m.chen@university.edu",
+    collegeEmail: "marcus.chen@college.edu",
     rating: 4.9,
   },
   {
@@ -121,6 +124,7 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/priyasharma-backend",
     linkedin: "https://linkedin.com/in/priya-sharma-cloud",
     email: "priya.s@university.edu",
+    collegeEmail: "priya.s@college.edu",
     rating: 4.88,
   },
   {
@@ -146,6 +150,7 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/davidkim-pm",
     linkedin: "https://linkedin.com/in/david-kim-product",
     email: "david.kim@university.edu",
+    collegeEmail: "david.kim@college.edu",
     rating: 4.75,
   },
   {
@@ -176,6 +181,7 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/zara-almansoor",
     linkedin: "https://linkedin.com/in/zara-almansoor-geo",
     email: "zara.a@university.edu",
+    collegeEmail: "zara.a@college.edu",
     rating: 4.92,
   },
   {
@@ -201,6 +207,7 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/leothorne-sec",
     linkedin: "https://linkedin.com/in/leo-thorne-crypto",
     email: "leo.t@university.edu",
+    collegeEmail: "leo.thorne@college.edu",
     rating: 4.89,
   },
   {
@@ -226,6 +233,7 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/mayapatel-dev",
     linkedin: "https://linkedin.com/in/maya-patel-swe",
     email: "maya.p@university.edu",
+    collegeEmail: "maya.p@college.edu",
     rating: 4.8,
   },
   {
@@ -251,6 +259,7 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/lucasvance-robotics",
     linkedin: "https://linkedin.com/in/lucas-vance-ece",
     email: "lucas.v@university.edu",
+    collegeEmail: "lucas.v@college.edu",
     rating: 4.85,
   },
   {
@@ -276,7 +285,39 @@ export const DEMO_STUDENTS: StudentProfile[] = [
     github: "https://github.com/chloe-dubois-nlp",
     linkedin: "https://linkedin.com/in/chloe-dubois-cs",
     email: "chloe.d@university.edu",
+    collegeEmail: "chloe.dubois@college.edu",
     rating: 4.94,
+  },
+  {
+    id: "student-10",
+    name: "Riya Sharma",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=faces",
+    department: "Computer Science",
+    year: "Junior",
+    bio: "Cybersecurity Analyst specializing in threat detection, network security monitoring, and automated SIEM alerting. Passionate about AI-driven defense mechanisms.",
+    skills: ["Cybersecurity", "Network Security", "Threat Detection", "Python", "SIEM"],
+    interests: ["Cybersecurity", "Privacy", "Artificial Intelligence"],
+    experienceLevel: "Intermediate",
+    weeklyAvailability: 10,
+    availabilitySchedule: "Weekday afternoons & weekend CTF sessions",
+    preferredRoles: ["Cybersecurity Analyst"],
+    previousProjects: [
+      {
+        title: "PhishTrap: AI Phishing Header Analyzer",
+        description: "Spear-phishing detection system inspecting email headers, SPF/DKIM validation, and anomalous payload patterns.",
+        tech: ["Python", "Cybersecurity", "Threat Detection", "SIEM"],
+      },
+      {
+        title: "NetSentinel Network Monitor",
+        description: "Automated network intrusion telemetry processing packet captures and alerting on lateral movements.",
+        tech: ["Python", "Network Security", "SIEM"],
+      },
+    ],
+    github: "https://github.com/riyasharma-sec",
+    linkedin: "https://linkedin.com/in/riya-sharma-cyber",
+    email: "riya.sharma@university.edu",
+    collegeEmail: "riya@college.edu",
+    rating: 4.9,
   },
 ];
 
@@ -344,4 +385,51 @@ export const INITIAL_PROJECTS: Project[] = [
     aiExtracted: true,
     status: "Recruiting",
   },
+  {
+    id: "proj-4",
+    title: "CyberShield – AI-Based Phishing Detection",
+    description: "Developing an intelligent threat detection pipeline that analyzes incoming email payloads, URL structures, and domain reputation to prevent sophisticated spear-phishing attacks in real-time.",
+    projectType: "Course Project",
+    domain: "Cybersecurity & Artificial Intelligence",
+    requiredTeamSize: 3,
+    duration: "1 Semester",
+    weeklyCommitment: 10,
+    availabilityRequirement: "10 hours/week",
+    requiredSkills: ["Cybersecurity", "Python", "Threat Detection"],
+    preferredSkills: ["Network Security", "SIEM", "Machine Learning"],
+    requiredRoles: ["Cybersecurity Analyst", "ML / AI Engineer", "Backend Engineer"],
+    experienceRequired: "Intermediate",
+    createdAt: "2026-08-24",
+    authorName: "Alex Rivera",
+    authorDepartment: "Computer Science & AI",
+    selectedTeamMemberIds: [],
+    isOwner: true,
+    aiExtracted: true,
+    status: "Recruiting",
+  },
 ];
+
+export const INITIAL_INVITATIONS = [
+  {
+    id: "inv-init-1",
+    projectId: "proj-1",
+    projectTitle: "NeuroScan AI: Early Alzheimer's Detection",
+    projectDescription:
+      "Developing an explainable deep learning pipeline to detect early-stage Alzheimer's biomarkers from 3D MRI neuroimaging scans.",
+    senderId: "student-current",
+    senderName: "Alex Rivera",
+    recipientId: "student-1",
+    recipientName: "Elena Rostova",
+    recipientAvatar:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces",
+    recipientDepartment: "Data Science & Statistics",
+    recipientYear: "Senior",
+    proposedRole: "ML / AI Engineer",
+    matchScore: 94,
+    status: "Accepted" as const,
+    createdAt: "2026-08-20T14:30:00Z",
+    respondedAt: "2026-08-20T15:10:00Z",
+    isRead: true,
+  },
+];
+
