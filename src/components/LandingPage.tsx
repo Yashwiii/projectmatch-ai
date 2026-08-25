@@ -59,27 +59,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
             <button
               id="landing-cta-find-team"
+              type="button"
               onClick={onFindTeam}
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white text-base font-semibold px-7 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-150 active:scale-98 cursor-pointer"
+              aria-label="Find Your Team and explore matches"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white text-base font-semibold px-7 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-150 active:scale-98 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
             >
-              <Sparkles className="w-5 h-5" />
+              <Sparkles className="w-5 h-5" aria-hidden="true" />
               <span>Find Your Team</span>
-              <ArrowRight className="w-4 h-4 ml-1" />
+              <ArrowRight className="w-4 h-4 ml-1" aria-hidden="true" />
             </button>
 
             <button
               id="landing-cta-create-project"
+              type="button"
               onClick={onCreateProject}
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-base font-semibold px-7 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs transition-all duration-150 cursor-pointer"
+              aria-label="Create a new project"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-base font-semibold px-7 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs transition-all duration-150 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
             >
-              <Layers className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <Layers className="w-5 h-5 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
               <span>Create Project</span>
             </button>
 
             <button
               id="landing-cta-dashboard"
+              type="button"
               onClick={onExploreDashboard}
-              className="w-full sm:w-auto inline-flex items-center justify-center text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 px-4 py-3 transition-colors cursor-pointer"
+              aria-label="Explore Student Hub Dashboard"
+              className="w-full sm:w-auto inline-flex items-center justify-center text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 px-4 py-3 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden rounded-xl"
             >
               <span>Explore Student Hub →</span>
             </button>
@@ -309,8 +315,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
             <div className="flex items-center space-x-3">
               <button
+                type="button"
                 onClick={onFindTeam}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all shadow-sm cursor-pointer whitespace-nowrap"
+                aria-label="Launch Team Matcher"
+                className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all shadow-sm cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 Launch Team Matcher
               </button>

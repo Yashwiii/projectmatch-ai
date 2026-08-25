@@ -809,3 +809,46 @@ export function calculateTeamHealthScore(
     aiInsight,
   };
 }
+
+/**
+ * Ranks candidates for a project based on calculated match scores or chosen criteria
+ */
+export function rankCandidates(
+  candidates: StudentProfile[],
+  project: Project,
+  options: {
+    sortBy?: "score" | "availability" | "experience";
+    minMatchScore?: number;
+    roleFilter?: string;
+    deptFilter?: string;
+  } = {}
+): CandidateMatch[] {
+  const { sortBy = "score", minMatchScore = 0, roleFilter, deptFilter } = options;
+
+  return candidates
+    .map((student) => ({
+      student,
+      match: calculateStudentMatch(student, project),
+    }))
+    .filter(({ student, match }) => {
+      if (minMatchScore > 0 && match.overallScore < minMatchScore) return false;
+      if (roleFilter && roleFilter !== "ALL") {
+        const hasRole = student.preferredRoles.some((r) => matchesRole(r, roleFilter));
+        if (!hasRole) return false;
+      }
+      if (deptFilter && deptFilter !== "ALL") {
+        if (!student.department.includes(deptFilter)) return false;
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortBy === "score") {
+        return b.match.overallScore - a.match.overallScore;
+      } else if (sortBy === "availability") {
+        return b.student.weeklyAvailability - a.student.weeklyAvailability;
+      } else {
+        const expOrder: Record<ExperienceLevel, number> = { Beginner: 1, Intermediate: 2, Advanced: 3, Expert: 4 };
+        return expOrder[b.student.experienceLevel] - expOrder[a.student.experienceLevel];
+      }
+    });
+}

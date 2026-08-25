@@ -46,12 +46,14 @@ export const ThemeSwitcher: React.FC = () => {
         id="theme-switcher-button"
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-all duration-150 cursor-pointer shadow-2xs focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+        className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-all duration-150 cursor-pointer shadow-2xs focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
         title={`Theme: ${currentOption.label} (${theme === "system" ? `System: ${resolvedTheme}` : theme})`}
-        aria-label="Select color theme"
+        aria-label={`Color theme switcher. Current theme is ${currentOption.label}`}
+        aria-haspopup="menu"
         aria-expanded={isOpen}
+        aria-controls="theme-switcher-dropdown"
       >
-        <span className="text-sm leading-none">{currentOption.symbol}</span>
+        <span className="text-sm leading-none" aria-hidden="true">{currentOption.symbol}</span>
         <span className="hidden sm:inline text-xs font-medium">{currentOption.label}</span>
       </button>
 
@@ -60,8 +62,9 @@ export const ThemeSwitcher: React.FC = () => {
           id="theme-switcher-dropdown"
           className="absolute right-0 mt-1.5 w-36 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg shadow-slate-900/10 dark:shadow-black/40 z-50 animate-in fade-in zoom-in-95 duration-100"
           role="menu"
+          aria-label="Color theme options"
         >
-          <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800/60 mb-0.5">
+          <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-100 dark:border-slate-800/60 mb-0.5" role="none">
             Appearance
           </div>
           {options.map((opt) => {
@@ -75,7 +78,8 @@ export const ThemeSwitcher: React.FC = () => {
                   setTheme(opt.id);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs text-left cursor-pointer transition-colors ${
+                aria-label={`Switch to ${opt.label} theme`}
+                className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs text-left cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   isSelected
                     ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-bold"
                     : "text-slate-700 dark:text-slate-300 hover:bg-slate-100/80 dark:hover:bg-slate-800 font-medium"
@@ -83,11 +87,11 @@ export const ThemeSwitcher: React.FC = () => {
                 role="menuitem"
               >
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm leading-none">{opt.symbol}</span>
+                  <span className="text-sm leading-none" aria-hidden="true">{opt.symbol}</span>
                   <span>{opt.label}</span>
                 </div>
                 {isSelected && (
-                  <Check className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 stroke-[2.5]" />
+                  <Check className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 stroke-[2.5]" aria-hidden="true" />
                 )}
               </button>
             );

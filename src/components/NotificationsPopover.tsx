@@ -73,19 +73,22 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
             onMarkAllAsRead();
           }
         }}
-        className={`relative p-2 rounded-xl transition-colors cursor-pointer border ${
+        className={`relative p-2 rounded-xl transition-colors cursor-pointer border focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
           isOpen
             ? "bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 ring-2 ring-indigo-500/20"
             : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-800"
         }`}
         title="Team Invitations & Notifications"
-        aria-label="Team Invitations & Notifications"
+        aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
+        aria-haspopup="dialog"
         aria-expanded={isOpen}
+        aria-controls="notifications-popover-panel"
       >
-        <Bell className="w-4 h-4" />
+        <Bell className="w-4 h-4" aria-hidden="true" />
         {unreadCount > 0 && (
           <span
             id="notifications-badge-count"
+            aria-hidden="true"
             className="absolute -top-1 -right-1 bg-indigo-600 text-white text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-xs border-2 border-white dark:border-slate-900 animate-in zoom-in-50"
           >
             {unreadCount > 9 ? "9+" : unreadCount}
@@ -97,6 +100,8 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
       {isOpen && (
         <div
           id="notifications-popover-panel"
+          role="dialog"
+          aria-label="Team Invitations and Notifications"
           className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150"
         >
           {/* Header */}
@@ -117,7 +122,8 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
                 <button
                   type="button"
                   onClick={onMarkAllAsRead}
-                  className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+                  aria-label="Mark all notifications as read"
+                  className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
                 >
                   Mark all read
                 </button>
@@ -125,11 +131,13 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
             </div>
 
             {/* Filter Tabs */}
-            <div className="flex items-center space-x-1 mt-3 bg-slate-200/60 dark:bg-slate-800 p-0.5 rounded-lg text-xs">
+            <div role="tablist" aria-label="Notification filters" className="flex items-center space-x-1 mt-3 bg-slate-200/60 dark:bg-slate-800 p-0.5 rounded-lg text-xs">
               <button
                 type="button"
+                role="tab"
+                aria-selected={filterTab === "all"}
                 onClick={() => setFilterTab("all")}
-                className={`flex-1 py-1 px-2 rounded-md font-semibold text-[11px] transition-colors cursor-pointer ${
+                className={`flex-1 py-1 px-2 rounded-md font-semibold text-[11px] transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   filterTab === "all"
                     ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -139,8 +147,10 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected={filterTab === "pending"}
                 onClick={() => setFilterTab("pending")}
-                className={`flex-1 py-1 px-2 rounded-md font-semibold text-[11px] transition-colors cursor-pointer ${
+                className={`flex-1 py-1 px-2 rounded-md font-semibold text-[11px] transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   filterTab === "pending"
                     ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -150,8 +160,10 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected={filterTab === "resolved"}
                 onClick={() => setFilterTab("resolved")}
-                className={`flex-1 py-1 px-2 rounded-md font-semibold text-[11px] transition-colors cursor-pointer ${
+                className={`flex-1 py-1 px-2 rounded-md font-semibold text-[11px] transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   filterTab === "resolved"
                     ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -166,11 +178,11 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
           <div className="max-h-96 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800/80">
             {filteredInvitations.length === 0 ? (
               <div className="p-8 text-center space-y-2">
-                <Inbox className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
+                <Inbox className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" aria-hidden="true" />
                 <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                   {filterTab === "pending" ? "No pending invitations" : "No notifications yet"}
                 </p>
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 max-w-xs mx-auto">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
                   When team owners send invitations or candidates accept requests, they will appear here.
                 </p>
               </div>
@@ -195,13 +207,13 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
                       <div className="flex items-start space-x-2.5">
                         <img
                           src={inv.recipientAvatar}
-                          alt={inv.recipientName}
+                          alt={`${inv.recipientName}'s profile photo`}
                           className="w-9 h-9 rounded-full object-cover ring-2 ring-indigo-500/20 shrink-0"
                         />
                         <div>
                           <div className="flex items-center space-x-1.5">
                             <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center space-x-1">
-                              <Sparkles className="w-3 h-3" />
+                              <Sparkles className="w-3 h-3" aria-hidden="true" />
                               <span>New Team Invitation</span>
                             </span>
                           </div>
@@ -221,7 +233,7 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
                     <div className="bg-white dark:bg-slate-800/90 rounded-xl p-3 border border-slate-200/80 dark:border-slate-700/80 space-y-2 text-xs">
                       <div>
                         <div className="flex items-center space-x-1 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                          <FolderKanban className="w-3 h-3 text-slate-400" />
+                          <FolderKanban className="w-3 h-3 text-slate-400" aria-hidden="true" />
                           <span>Project:</span>
                         </div>
                         <h4 className="font-extrabold text-slate-900 dark:text-white text-xs mt-0.5">
@@ -248,25 +260,27 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
                           type="button"
                           id={`btn-accept-invitation-${inv.id}`}
                           onClick={() => onAcceptInvitation(inv.id)}
-                          className="flex-1 inline-flex items-center justify-center space-x-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 px-3 rounded-xl transition-all duration-150 active:scale-95 cursor-pointer shadow-xs"
+                          aria-label={`Accept team invitation from ${inv.senderName} for ${inv.projectTitle}`}
+                          className="flex-1 inline-flex items-center justify-center space-x-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 px-3 rounded-xl transition-all duration-150 active:scale-95 cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-hidden"
                         >
-                          <Check className="w-3.5 h-3.5" />
+                          <Check className="w-3.5 h-3.5" aria-hidden="true" />
                           <span>Accept</span>
                         </button>
                         <button
                           type="button"
                           id={`btn-decline-invitation-${inv.id}`}
                           onClick={() => onDeclineInvitation(inv.id)}
-                          className="flex-1 inline-flex items-center justify-center space-x-1 bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-700 dark:text-slate-300 hover:text-rose-700 dark:hover:text-rose-300 border border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-900 font-bold text-xs py-2 px-3 rounded-xl transition-all duration-150 active:scale-95 cursor-pointer"
+                          aria-label={`Decline team invitation from ${inv.senderName} for ${inv.projectTitle}`}
+                          className="flex-1 inline-flex items-center justify-center space-x-1 bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-700 dark:text-slate-300 hover:text-rose-700 dark:hover:text-rose-300 border border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-900 font-bold text-xs py-2 px-3 rounded-xl transition-all duration-150 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:outline-hidden"
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <X className="w-3.5 h-3.5" aria-hidden="true" />
                           <span>Decline</span>
                         </button>
                       </div>
                     ) : isAccepted ? (
                       <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-xl p-2.5 flex items-center justify-between text-xs">
                         <div className="flex items-center space-x-1.5 text-emerald-800 dark:text-emerald-300 font-bold text-[11px]">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" aria-hidden="true" />
                           <span>Connected ✓</span>
                         </div>
                         <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-medium">
@@ -276,7 +290,7 @@ export const NotificationsPopover: React.FC<NotificationsPopoverProps> = ({
                     ) : (
                       <div className="bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 flex items-center justify-between text-xs">
                         <div className="flex items-center space-x-1.5 text-slate-700 dark:text-slate-300 font-bold text-[11px]">
-                          <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
+                          <XCircle className="w-4 h-4 text-rose-500 shrink-0" aria-hidden="true" />
                           <span>Connection Declined</span>
                         </div>
                         <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">

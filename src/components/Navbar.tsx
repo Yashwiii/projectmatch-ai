@@ -71,11 +71,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             {/* Navigation Tabs */}
-            <nav className="hidden md:flex items-center space-x-1 pl-4 border-l border-slate-200 dark:border-slate-800">
+            <nav aria-label="Main Navigation" className="hidden md:flex items-center space-x-1 pl-4 border-l border-slate-200 dark:border-slate-800">
               <button
                 id="nav-tab-home"
                 onClick={() => setCurrentTab("landing")}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer ${
+                aria-current={currentTab === "landing" ? "page" : undefined}
+                aria-label="Home page"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   currentTab === "landing"
                     ? "bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-semibold"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60"
@@ -88,7 +90,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 id="nav-tab-dashboard"
                 onClick={() => setCurrentTab("dashboard")}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer ${
+                aria-current={currentTab === "dashboard" ? "page" : undefined}
+                aria-label="Student Dashboard"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   currentTab === "dashboard"
                     ? "bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-semibold"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60"
@@ -101,7 +105,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 id="nav-tab-projects"
                 onClick={() => setCurrentTab("projects")}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer ${
+                aria-current={currentTab === "projects" ? "page" : undefined}
+                aria-label="My Projects"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   currentTab === "projects"
                     ? "bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-semibold"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60"
@@ -114,7 +120,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 id="nav-tab-matching"
                 onClick={() => setCurrentTab("matching")}
-                className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer ${
+                aria-current={currentTab === "matching" ? "page" : undefined}
+                aria-label="Find Teammates Matchmaker"
+                className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   currentTab === "matching"
                     ? "bg-indigo-600 text-white shadow-sm font-semibold"
                     : "text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 font-semibold"
@@ -134,7 +142,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 id="nav-tab-profile"
                 onClick={() => setCurrentTab("profile")}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer ${
+                aria-current={currentTab === "profile" ? "page" : undefined}
+                aria-label="Student Profile"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden ${
                   currentTab === "profile"
                     ? "bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-semibold"
                     : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60"
@@ -151,12 +161,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Active Project Dropdown Pill */}
             {projects.length > 0 && (
               <div className="hidden lg:flex items-center text-xs bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-lg px-2.5 py-1.5">
-                <span className="text-slate-400 dark:text-slate-500 mr-1.5 font-medium">Active:</span>
+                <label htmlFor="nav-active-project-selector" className="text-slate-500 dark:text-slate-400 mr-1.5 font-medium cursor-pointer">
+                  Active:
+                </label>
                 <select
                   id="nav-active-project-selector"
                   value={activeProjectId}
                   onChange={(e) => setActiveProjectId(e.target.value)}
-                  aria-label="Active Project"
+                  aria-label="Active Project selection"
                   className="bg-transparent font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-pointer max-w-[170px] truncate pr-1"
                 >
                   {projects.map((p) => (
@@ -182,8 +194,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Create Project Button */}
             <button
               id="nav-btn-create-project"
+              type="button"
               onClick={onOpenCreateProject}
-              className="inline-flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg shadow-sm transition-all duration-150 active:scale-95 cursor-pointer"
+              aria-label="Create new project"
+              className="inline-flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg shadow-sm transition-all duration-150 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
             >
               <PlusCircle className="w-4 h-4" />
               <span className="hidden sm:inline">Create Project</span>
@@ -193,13 +207,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Profile Avatar Pill */}
             <button
               id="nav-btn-user-avatar"
+              type="button"
               onClick={() => setCurrentTab("profile")}
-              className="flex items-center space-x-2 pl-2 pr-1.5 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border border-slate-200 dark:border-slate-700/80"
+              aria-label="View my student profile for Alex Rivera"
+              className="flex items-center space-x-2 pl-2 pr-1.5 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border border-slate-200 dark:border-slate-700/80 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               title="View my student profile"
             >
               <img
                 src={userAvatar}
-                alt="User avatar"
+                alt="Alex Rivera profile avatar"
                 className="w-7 h-7 rounded-full object-cover ring-2 ring-indigo-500/30"
               />
               <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 hidden sm:inline">
@@ -210,9 +226,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile Navigation Row */}
-        <div className="flex md:hidden items-center justify-around py-2 border-t border-slate-100 dark:border-slate-800 overflow-x-auto space-x-1">
+        <nav aria-label="Mobile Navigation" className="flex md:hidden items-center justify-around py-2 border-t border-slate-100 dark:border-slate-800 overflow-x-auto space-x-1">
           <button
+            type="button"
             onClick={() => setCurrentTab("landing")}
+            aria-current={currentTab === "landing" ? "page" : undefined}
+            aria-label="Home"
             className={`px-2.5 py-1.5 rounded-md text-xs font-medium ${
               currentTab === "landing"
                 ? "bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-bold"
@@ -222,7 +241,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             Home
           </button>
           <button
+            type="button"
             onClick={() => setCurrentTab("dashboard")}
+            aria-current={currentTab === "dashboard" ? "page" : undefined}
+            aria-label="Dashboard"
             className={`px-2.5 py-1.5 rounded-md text-xs font-medium ${
               currentTab === "dashboard"
                 ? "bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-bold"
@@ -232,7 +254,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             Dashboard
           </button>
           <button
+            type="button"
             onClick={() => setCurrentTab("projects")}
+            aria-current={currentTab === "projects" ? "page" : undefined}
+            aria-label="Projects"
             className={`px-2.5 py-1.5 rounded-md text-xs font-medium ${
               currentTab === "projects"
                 ? "bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-bold"
@@ -242,7 +267,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             Projects
           </button>
           <button
+            type="button"
             onClick={() => setCurrentTab("matching")}
+            aria-current={currentTab === "matching" ? "page" : undefined}
+            aria-label="Find Teammates Matchmaker"
             className={`px-3 py-1.5 rounded-md text-xs font-semibold ${
               currentTab === "matching" ? "bg-indigo-600 text-white" : "text-indigo-600 dark:text-indigo-400 font-bold"
             }`}
@@ -250,7 +278,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             ✨ Find Team
           </button>
           <button
+            type="button"
             onClick={() => setCurrentTab("profile")}
+            aria-current={currentTab === "profile" ? "page" : undefined}
+            aria-label="Profile"
             className={`px-2.5 py-1.5 rounded-md text-xs font-medium ${
               currentTab === "profile"
                 ? "bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-bold"
@@ -259,7 +290,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Profile
           </button>
-        </div>
+        </nav>
       </div>
     </header>
   );

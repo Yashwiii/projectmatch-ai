@@ -97,20 +97,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         <div className="flex flex-wrap items-center gap-3">
           <button
+            type="button"
             id="dash-btn-find-team"
             onClick={() => onNavigateToMatching(activeProject?.id)}
-            className="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl shadow-xs transition-colors cursor-pointer"
+            aria-label="Match teammates for active project"
+            className="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl shadow-xs transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
           >
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4" aria-hidden="true" />
             <span>Match Teammates</span>
           </button>
 
           <button
+            type="button"
             id="dash-btn-create-project"
             onClick={onOpenCreateProject}
-            className="inline-flex items-center space-x-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs transition-colors cursor-pointer"
+            aria-label="Create a new project"
+            className="inline-flex items-center space-x-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
           >
-            <PlusCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+            <PlusCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
             <span>Create Project</span>
           </button>
         </div>
@@ -154,8 +158,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
 
             <button
+              type="button"
               onClick={onNavigateToProfile}
-              className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-4 py-2.5 rounded-xl border border-white/20 transition-colors whitespace-nowrap cursor-pointer"
+              aria-label="Edit student profile"
+              className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-4 py-2.5 rounded-xl border border-white/20 transition-colors whitespace-nowrap cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-hidden"
             >
               Edit Profile →
             </button>
@@ -169,15 +175,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="lg:col-span-7 space-y-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <FolderKanban className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <FolderKanban className="w-5 h-5 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">Active Projects</h2>
             </div>
             <button
+              type="button"
               onClick={onNavigateToProjects}
-              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center space-x-1 cursor-pointer"
+              aria-label={`View all ${projects.length} projects`}
+              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center space-x-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden rounded"
             >
               <span>View All ({projects.length})</span>
-              <ChevronRight className="w-3.5 h-3.5" />
+              <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </div>
 
@@ -240,26 +248,28 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
                     <div className="flex items-center space-x-4 text-slate-500 dark:text-slate-400">
                       <div className="flex items-center space-x-1.5">
-                        <Users className="w-3.5 h-3.5 text-slate-400" />
+                        <Users className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
                         <span>
                           Roster: <strong className="text-slate-800 dark:text-slate-200 font-bold">{selectedCount}/{targetSize}</strong>
                         </span>
                       </div>
                       <div className="flex items-center space-x-1.5">
-                        <Clock className="w-3.5 h-3.5 text-slate-400" />
+                        <Clock className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
                         <span>{project.weeklyCommitment}h / wk</span>
                       </div>
                     </div>
 
                     <div className="flex items-center space-x-2">
                       <button
+                        type="button"
                         onClick={() => {
                           onSelectActiveProject(project.id);
                           onNavigateToMatching(project.id);
                         }}
-                        className="bg-indigo-50 dark:bg-indigo-950/80 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1 cursor-pointer"
+                        aria-label={`Match candidates for ${project.title}`}
+                        className="bg-indigo-50 dark:bg-indigo-950/80 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-700 dark:text-indigo-300 font-semibold px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
                       >
-                        <Sparkles className="w-3.5 h-3.5" />
+                        <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
                         <span>Match Candidates</span>
                       </button>
                     </div>
@@ -274,7 +284,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="lg:col-span-5 space-y-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">
                 Top Matches for{" "}
                 <span className="text-indigo-600 dark:text-indigo-400 font-bold truncate inline-block max-w-[140px] align-bottom">
@@ -283,8 +293,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </h2>
             </div>
             <button
+              type="button"
               onClick={() => onNavigateToMatching(activeProject?.id)}
-              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 cursor-pointer"
+              aria-label="See all matches in Explainable Matcher"
+              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden rounded"
             >
               See All →
             </button>
@@ -302,7 +314,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <div className="flex items-center space-x-3">
                       <img
                         src={student.avatar}
-                        alt={student.name}
+                        alt={`${student.name}'s profile avatar`}
                         className="w-11 h-11 rounded-xl object-cover ring-2 ring-indigo-500/20"
                       />
                       <div>
@@ -346,14 +358,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
                     <div className="flex items-center space-x-2">
                       <button
+                        type="button"
                         onClick={() => onViewStudentDetail(student)}
-                        className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium px-2 py-1 cursor-pointer"
+                        aria-label={`View full profile of ${student.name}`}
+                        className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium px-2 py-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden rounded"
                       >
                         Profile
                       </button>
                       <button
+                        type="button"
                         onClick={() => onNavigateToMatching(activeProject?.id)}
-                        className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold px-2 py-1 cursor-pointer"
+                        aria-label={`Explain match score for ${student.name}`}
+                        className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold px-2 py-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden rounded"
                       >
                         Explain Score →
                       </button>
@@ -367,7 +383,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Recommended Projects Box */}
           <div className="bg-slate-100/70 dark:bg-slate-900/80 rounded-xl p-4 border border-slate-200 dark:border-slate-800">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2 flex items-center space-x-1.5">
-              <Compass className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+              <Compass className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
               <span>Projects seeking your skills</span>
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-3">
@@ -384,11 +400,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <span className="text-[11px] text-slate-500 dark:text-slate-400">{p.domain} · {p.projectType}</span>
                   </div>
                   <button
+                    type="button"
                     onClick={() => {
                       onSelectActiveProject(p.id);
                       onNavigateToMatching(p.id);
                     }}
-                    className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline shrink-0 cursor-pointer"
+                    aria-label={`View project details for ${p.title}`}
+                    className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden rounded"
                   >
                     View
                   </button>

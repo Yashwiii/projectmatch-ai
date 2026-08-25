@@ -313,26 +313,35 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="create-project-modal-title"
+      className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6"
+    >
       <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/50">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white" aria-hidden="true">
               <Layers className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="font-bold text-slate-900 dark:text-white text-lg">Create New Project</h2>
+              <h2 id="create-project-modal-title" className="font-bold text-slate-900 dark:text-white text-lg">
+                Create New Project
+              </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Define your vision and let Explainable AI match complementary teammates
               </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            aria-label="Close create project dialog"
+            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
 
@@ -341,7 +350,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           {/* Preset Prompts Helper */}
           <div className="bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
             <span className="text-xs font-semibold text-indigo-900 dark:text-indigo-200 flex items-center space-x-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
               <span>Quick Demo Idea Presets:</span>
             </span>
             <div className="flex flex-wrap gap-1.5">
@@ -349,28 +358,32 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                 type="button"
                 id="btn-preset-crop-disease"
                 onClick={() => loadPreset("crop")}
-                className="text-xs bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-slate-700 font-semibold px-2.5 py-1 rounded-md border border-emerald-200 dark:border-emerald-800/60 shadow-2xs transition-colors cursor-pointer"
+                aria-label="Load Crop Disease AI preset"
+                className="text-xs bg-white dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-slate-700 font-semibold px-2.5 py-1 rounded-md border border-emerald-200 dark:border-emerald-800/60 shadow-2xs transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 🌱 Crop Disease AI
               </button>
               <button
                 type="button"
                 onClick={() => loadPreset("health")}
-                className="text-xs bg-white dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-slate-700 font-medium px-2.5 py-1 rounded-md border border-indigo-200 dark:border-indigo-800/60 shadow-2xs transition-colors cursor-pointer"
+                aria-label="Load Healthcare AI preset"
+                className="text-xs bg-white dark:bg-slate-800 text-indigo-800 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-slate-700 font-medium px-2.5 py-1 rounded-md border border-indigo-200 dark:border-indigo-800/60 shadow-2xs transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 🏥 Healthcare AI
               </button>
               <button
                 type="button"
                 onClick={() => loadPreset("climate")}
-                className="text-xs bg-white dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-slate-700 font-medium px-2.5 py-1 rounded-md border border-indigo-200 dark:border-indigo-800/60 shadow-2xs transition-colors cursor-pointer"
+                aria-label="Load Clean Energy preset"
+                className="text-xs bg-white dark:bg-slate-800 text-indigo-800 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-slate-700 font-medium px-2.5 py-1 rounded-md border border-indigo-200 dark:border-indigo-800/60 shadow-2xs transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 ⚡ Clean Energy
               </button>
               <button
                 type="button"
                 onClick={() => loadPreset("fintech")}
-                className="text-xs bg-white dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-slate-700 font-medium px-2.5 py-1 rounded-md border border-indigo-200 dark:border-indigo-800/60 shadow-2xs transition-colors cursor-pointer"
+                aria-label="Load Web3 & Privacy preset"
+                className="text-xs bg-white dark:bg-slate-800 text-indigo-800 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-slate-700 font-medium px-2.5 py-1 rounded-md border border-indigo-200 dark:border-indigo-800/60 shadow-2xs transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 🔒 Web3 & Privacy
               </button>
@@ -380,7 +393,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           {/* Title & Type */}
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
             <div className="sm:col-span-8">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="create-project-input-title" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
                 Project Title <span className="text-rose-500">*</span>
               </label>
               <input
@@ -390,19 +403,19 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., NeuroScan AI: Early Alzheimer's Detection"
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 text-sm font-medium"
+                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 text-sm font-medium focus-visible:outline-hidden"
               />
             </div>
 
             <div className="sm:col-span-4">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="create-project-select-type" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
                 Project Type <span className="text-rose-500">*</span>
               </label>
               <select
                 id="create-project-select-type"
                 value={projectType}
                 onChange={(e) => setProjectType(e.target.value as ProjectType)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-600 text-sm font-medium"
+                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-600 text-sm font-medium focus-visible:outline-hidden"
               >
                 {PROJECT_TYPE_OPTIONS.map((opt) => (
                   <option key={opt} value={opt} className="bg-white dark:bg-slate-850 text-slate-900 dark:text-slate-100">
@@ -416,10 +429,10 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           {/* Description & Analyze with AI Section */}
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+              <label htmlFor="create-project-input-description" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                 Project Description <span className="text-rose-500">*</span>
               </label>
-              <span className="text-[11px] text-slate-400 dark:text-slate-500">
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">
                 Explain the problem, tech stack, and goals
               </span>
             </div>
@@ -430,7 +443,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe your technical architecture, objectives, and what kind of collaborators you are looking for..."
-              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 text-sm"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 text-sm focus-visible:outline-hidden"
             />
 
             {/* Prominent Analyze with AI Button */}
@@ -440,29 +453,30 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                 id="btn-analyze-with-ai"
                 onClick={handleAnalyzeWithAI}
                 disabled={isAnalyzing}
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-50"
+                aria-label="Analyze project description with AI"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 {isAnalyzing ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
                     <span>AI Analyzing Project Requirements...</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-4 h-4" aria-hidden="true" />
                     <span>Analyze with AI</span>
                   </>
                 )}
               </button>
 
-              <span className="text-xs text-slate-500 dark:text-slate-400">
+              <span className="text-xs text-slate-600 dark:text-slate-400">
                 ⚡ Auto-extracts domain, required skills, roles, and weekly hours
               </span>
             </div>
 
             {analysisError && (
-              <div className="mt-2 text-xs text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 p-2.5 rounded-lg border border-rose-200 dark:border-rose-900/50 flex items-center space-x-1.5">
-                <AlertCircle className="w-4 h-4 shrink-0" />
+              <div role="alert" className="mt-2 text-xs text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/50 p-2.5 rounded-lg border border-rose-200 dark:border-rose-900/50 flex items-center space-x-1.5">
+                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" aria-hidden="true" />
                 <span>{analysisError}</span>
               </div>
             )}
@@ -472,11 +486,13 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           {aiAnalysisResult && (
             <div
               id="ai-project-analysis-card"
+              role="region"
+              aria-label="AI Project Analysis Results"
               className="bg-slate-900 text-white rounded-2xl p-5 border border-indigo-500/50 shadow-xl space-y-4 animate-in fade-in duration-200"
             >
               <div className="flex items-start justify-between gap-3 border-b border-slate-800 pb-3">
                 <div className="flex items-center space-x-2">
-                  <div className="w-7 h-7 rounded-lg bg-indigo-600/30 border border-indigo-500/50 flex items-center justify-center text-indigo-300">
+                  <div className="w-7 h-7 rounded-lg bg-indigo-600/30 border border-indigo-500/50 flex items-center justify-center text-indigo-300" aria-hidden="true">
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
@@ -489,7 +505,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                   </div>
                 </div>
                 <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-md border border-emerald-500/30 flex items-center space-x-1">
-                  <CheckCircle2 className="w-3 h-3" />
+                  <CheckCircle2 className="w-3 h-3" aria-hidden="true" />
                   <span>AI Inferred</span>
                 </span>
               </div>
@@ -585,14 +601,14 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                     type="button"
                     id="btn-edit-requirements"
                     onClick={() => {
-                      // Smoothly focus or scroll down to the manual editing fields
                       const manualSection = document.getElementById("manual-project-fields");
                       if (manualSection) {
                         manualSection.scrollIntoView({ behavior: "smooth" });
                       }
                       setAiConfirmed(true);
                     }}
-                    className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-colors cursor-pointer text-center"
+                    aria-label="Edit project requirements manually"
+                    className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-colors cursor-pointer text-center focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
                   >
                     Edit Requirements
                   </button>
@@ -600,9 +616,10 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                     type="button"
                     id="btn-find-my-team-from-ai"
                     onClick={handleFindTeamDirectly}
-                    className="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white text-xs font-bold shadow-sm transition-all cursor-pointer flex items-center justify-center space-x-1.5"
+                    aria-label="Find my team from AI requirements"
+                    className="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white text-xs font-bold shadow-sm transition-all cursor-pointer flex items-center justify-center space-x-1.5 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
                   >
-                    <Sparkles className="w-3.5 h-3.5" />
+                    <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
                     <span>Find My Team</span>
                   </button>
                 </div>
@@ -615,14 +632,14 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           {/* Domain & Duration Row */}
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
             <div className="sm:col-span-6">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="create-project-select-domain" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
                 Domain / Industry <span className="text-rose-500">*</span>
               </label>
               <select
                 id="create-project-select-domain"
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-600 text-sm font-medium"
+                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-600 text-sm font-medium focus-visible:outline-hidden"
               >
                 {DOMAIN_OPTIONS.map((d) => (
                   <option key={d} value={d} className="bg-white dark:bg-slate-850 text-slate-900 dark:text-slate-100">
@@ -633,29 +650,32 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
             </div>
 
             <div className="sm:col-span-3">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="create-project-input-team-size" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
                 Required Team Size
               </label>
               <input
+                id="create-project-input-team-size"
                 type="number"
                 min={2}
                 max={8}
                 value={requiredTeamSize}
                 onChange={(e) => setRequiredTeamSize(Number(e.target.value))}
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 text-sm font-medium"
+                aria-label="Required team size"
+                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 text-sm font-medium focus-visible:outline-hidden"
               />
             </div>
 
             <div className="sm:col-span-3">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="create-project-input-duration" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
                 Duration
               </label>
               <input
+                id="create-project-input-duration"
                 type="text"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
                 placeholder="e.g. 36 Hours"
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 text-sm font-medium"
+                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 text-sm font-medium focus-visible:outline-hidden"
               />
             </div>
           </div>
@@ -663,18 +683,23 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           {/* Commitment & Experience Level */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="create-project-input-commitment" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
                 Weekly Commitment (Hours / Week)
               </label>
               <div className="flex items-center space-x-3">
                 <input
+                  id="create-project-input-commitment"
                   type="range"
                   min={5}
                   max={35}
                   step={1}
                   value={weeklyCommitment}
                   onChange={(e) => setWeeklyCommitment(Number(e.target.value))}
-                  className="flex-1 accent-indigo-600"
+                  aria-label="Weekly commitment in hours per week"
+                  aria-valuemin={5}
+                  aria-valuemax={35}
+                  aria-valuenow={weeklyCommitment}
+                  className="flex-1 accent-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-500"
                 />
                 <span className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold px-3 py-1.5 rounded-lg text-xs w-20 text-center">
                   {weeklyCommitment} hrs/wk
@@ -683,15 +708,16 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="create-project-select-experience" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
                 Experience Level Required
               </label>
               <select
+                id="create-project-select-experience"
                 value={experienceRequired}
                 onChange={(e) =>
                   setExperienceRequired(e.target.value as ExperienceLevel | "Any")
                 }
-                className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 text-sm font-medium"
+                className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 text-sm font-medium focus-visible:outline-hidden"
               >
                 <option value="Any" className="bg-white dark:bg-slate-850 text-slate-900 dark:text-slate-100">Any Level</option>
                 <option value="Beginner" className="bg-white dark:bg-slate-850 text-slate-900 dark:text-slate-100">Beginner Friendly</option>
@@ -704,7 +730,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
           {/* Required Skills Matrix */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            <label htmlFor="input-new-req-skill" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
               Required Skills (Hard Criteria - 40% Match Weight)
             </label>
             <div className="flex flex-wrap gap-1.5 mb-2">
@@ -717,7 +743,8 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleRemoveSkill("required", sk)}
-                    className="text-indigo-400 dark:text-indigo-300 hover:text-indigo-700 dark:hover:text-indigo-100 cursor-pointer ml-1"
+                    aria-label={`Remove required skill ${sk}`}
+                    className="text-indigo-500 dark:text-indigo-300 hover:text-indigo-800 dark:hover:text-indigo-100 cursor-pointer ml-1 font-bold focus-visible:ring-1 focus-visible:ring-indigo-500"
                   >
                     ×
                   </button>
@@ -727,6 +754,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
             <div className="flex items-center space-x-2">
               <input
+                id="input-new-req-skill"
                 type="text"
                 value={newReqSkill}
                 onChange={(e) => setNewReqSkill(e.target.value)}
@@ -737,12 +765,14 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                   }
                 }}
                 placeholder="Type skill & press Enter (e.g. PyTorch)"
+                aria-label="Add new required skill"
                 className="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleAddSkill("required", newReqSkill)}
-                className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
+                aria-label="Add required skill to list"
+                className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 + Add
               </button>
@@ -750,13 +780,14 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
             {/* Quick skill pills */}
             <div className="flex flex-wrap gap-1 mt-2">
-              <span className="text-[11px] text-slate-400 dark:text-slate-500 mr-1">Suggestions:</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 mr-1">Suggestions:</span>
               {COMMON_SKILLS_SUGGESTIONS.slice(0, 7).map((s) => (
                 <button
                   key={s}
                   type="button"
                   onClick={() => handleAddSkill("required", s)}
-                  className="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded cursor-pointer"
+                  aria-label={`Add suggestion skill ${s}`}
+                  className="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded cursor-pointer focus-visible:ring-1 focus-visible:ring-indigo-500"
                 >
                   +{s}
                 </button>
@@ -766,20 +797,21 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
           {/* Preferred Skills */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            <label htmlFor="input-new-pref-skill" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
               Preferred / Nice-to-Have Skills
             </label>
             <div className="flex flex-wrap gap-1.5 mb-2">
               {preferredSkills.map((sk) => (
                 <span
                   key={sk}
-                  className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center space-x-1"
+                  className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-medium px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center space-x-1"
                 >
                   <span>{sk}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveSkill("preferred", sk)}
-                    className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer ml-1"
+                    aria-label={`Remove preferred skill ${sk}`}
+                    className="text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 cursor-pointer ml-1 font-bold focus-visible:ring-1 focus-visible:ring-indigo-500"
                   >
                     ×
                   </button>
@@ -789,6 +821,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
             <div className="flex items-center space-x-2">
               <input
+                id="input-new-pref-skill"
                 type="text"
                 value={newPrefSkill}
                 onChange={(e) => setNewPrefSkill(e.target.value)}
@@ -799,12 +832,14 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                   }
                 }}
                 placeholder="Add preferred skill (e.g. Docker, UI/UX Design)"
+                aria-label="Add new preferred skill"
                 className="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleAddSkill("preferred", newPrefSkill)}
-                className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
+                aria-label="Add preferred skill to list"
+                className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 + Add
               </button>
@@ -813,20 +848,21 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
           {/* Required Roles Matrix */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            <label htmlFor="input-new-req-role" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
               Required Roles on the Team
             </label>
             <div className="flex flex-wrap gap-1.5 mb-2">
               {requiredRoles.map((role) => (
                 <span
                   key={role}
-                  className="bg-blue-50 dark:bg-blue-950/60 text-blue-800 dark:text-blue-200 text-xs font-semibold px-2.5 py-1 rounded-lg border border-blue-200 dark:border-blue-800 flex items-center space-x-1"
+                  className="bg-blue-50 dark:bg-blue-950/60 text-blue-900 dark:text-blue-200 text-xs font-semibold px-2.5 py-1 rounded-lg border border-blue-200 dark:border-blue-800 flex items-center space-x-1"
                 >
                   <span>{role}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveRole(role)}
-                    className="text-blue-400 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-100 cursor-pointer ml-1"
+                    aria-label={`Remove required role ${role}`}
+                    className="text-blue-500 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-100 cursor-pointer ml-1 font-bold focus-visible:ring-1 focus-visible:ring-indigo-500"
                   >
                     ×
                   </button>
@@ -836,6 +872,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
             <div className="flex items-center space-x-2">
               <input
+                id="input-new-req-role"
                 type="text"
                 value={newReqRole}
                 onChange={(e) => setNewReqRole(e.target.value)}
@@ -846,25 +883,28 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                   }
                 }}
                 placeholder="Type role & press Enter (e.g. UI/UX Designer, ML Engineer)"
+                aria-label="Add new required role"
                 className="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleAddRole(newReqRole)}
-                className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
+                aria-label="Add role to requirements"
+                className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
               >
                 + Add Role
               </button>
             </div>
 
             <div className="flex flex-wrap gap-1 mt-2">
-              <span className="text-[11px] text-slate-400 dark:text-slate-500 mr-1">Suggestions:</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 mr-1">Suggestions:</span>
               {COMMON_ROLES_SUGGESTIONS.slice(0, 6).map((r) => (
                 <button
                   key={r}
                   type="button"
                   onClick={() => handleAddRole(r)}
-                  className="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded cursor-pointer"
+                  aria-label={`Add suggestion role ${r}`}
+                  className="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded cursor-pointer focus-visible:ring-1 focus-visible:ring-indigo-500"
                 >
                   +{r}
                 </button>
@@ -878,16 +918,17 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
             >
               Cancel
             </button>
             <button
               type="submit"
               id="btn-save-project-submit"
-              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition-all duration-150 active:scale-98 cursor-pointer flex items-center space-x-1.5"
+              aria-label="Save new project"
+              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition-all duration-150 active:scale-98 cursor-pointer flex items-center space-x-1.5 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
             >
-              <CheckCircle2 className="w-4 h-4" />
+              <CheckCircle2 className="w-4 h-4" aria-hidden="true" />
               <span>Save Project</span>
             </button>
           </div>

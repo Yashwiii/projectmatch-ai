@@ -451,7 +451,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleRemoveSkill(skill)}
-                      className="text-indigo-400 dark:text-indigo-300 hover:text-indigo-700 dark:hover:text-indigo-100 ml-1 cursor-pointer"
+                      aria-label={`Remove ${skill} skill`}
+                      className="text-indigo-400 dark:text-indigo-300 hover:text-indigo-700 dark:hover:text-indigo-100 ml-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden rounded"
                     >
                       ×
                     </button>
@@ -474,12 +475,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                       }
                     }}
                     placeholder="Type a skill and press Enter..."
-                    className="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none"
+                    aria-label="New skill name"
+                    className="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   />
                   <button
                     type="button"
                     onClick={() => handleAddSkill(newSkill)}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
+                    aria-label="Add skill to profile"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
                   >
                     + Add Skill
                   </button>
@@ -492,7 +495,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                       key={s}
                       type="button"
                       onClick={() => handleAddSkill(s)}
-                      className="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded cursor-pointer"
+                      aria-label={`Quick add ${s} skill`}
+                      className="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
                     >
                       +{s}
                     </button>
@@ -506,7 +510,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center space-x-2">
-                <Heart className="w-4 h-4 text-rose-500" />
+                <Heart className="w-4 h-4 text-rose-500" aria-hidden="true" />
                 <span>Interests & Project Domains</span>
               </h2>
               <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">
@@ -525,7 +529,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleRemoveInterest(interest)}
-                      className="text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 ml-1 cursor-pointer"
+                      aria-label={`Remove ${interest} interest`}
+                      className="text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 ml-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden rounded"
                     >
                       ×
                     </button>
@@ -548,12 +553,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                       }
                     }}
                     placeholder="Type an interest or research area..."
-                    className="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none"
+                    aria-label="New interest or research domain"
+                    className="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   />
                   <button
                     type="button"
                     onClick={() => handleAddInterest(newInterest)}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
+                    aria-label="Add interest to profile"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
                   >
                     + Add Interest
                   </button>
@@ -566,7 +573,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                       key={i}
                       type="button"
                       onClick={() => handleAddInterest(i)}
-                      className="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded cursor-pointer"
+                      aria-label={`Quick add ${i} interest`}
+                      className="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-hidden"
                     >
                       +{i}
                     </button>
