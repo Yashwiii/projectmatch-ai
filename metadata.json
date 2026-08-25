@@ -1,0 +1,6 @@
+{
+  "name": "ProjectMatch AI",
+  "description": "Explainable AI team matching platform for college students to build complementary project, hackathon, research, and startup teams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

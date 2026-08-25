@@ -1,0 +1,887 @@
+import React, { useState } from "react";
+import {
+  X,
+  Sparkles,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  Plus,
+  Trash2,
+  HelpCircle,
+  Layers,
+  Clock,
+  Users,
+  Briefcase,
+  Sliders,
+} from "lucide-react";
+import {
+  Project,
+  ProjectType,
+  ExperienceLevel,
+  AIAnalysisResult,
+} from "../types";
+
+interface CreateProjectModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSaveProject: (project: Project) => void;
+  onFindTeamForProject?: (project: Project) => void;
+  authorName: string;
+  authorDepartment: string;
+}
+
+const DOMAIN_OPTIONS = [
+  "Healthcare AI",
+  "ClimateTech & Clean Energy",
+  "FinTech & Algorithmic Trading",
+  "Web3 & Decentralized Systems",
+  "EdTech & Learning Platforms",
+  "Robotics & Hardware IoT",
+  "Cybersecurity & Privacy",
+  "Consumer Mobile & Social",
+  "Artificial Intelligence & ML",
+  "Bioinformatics & Genomics",
+];
+
+const PROJECT_TYPE_OPTIONS: ProjectType[] = [
+  "Hackathon",
+  "Competition",
+  "Research",
+  "Startup",
+  "Course Project",
+];
+
+const COMMON_SKILLS_SUGGESTIONS = [
+  "Python",
+  "PyTorch",
+  "Computer Vision",
+  "FastAPI",
+  "React",
+  "TypeScript",
+  "Tailwind CSS",
+  "Node.js",
+  "PostgreSQL",
+  "Docker",
+  "Solidity",
+  "UI/UX Design",
+  "Figma",
+  "Rust",
+  "C++",
+  "ROS2",
+  "Natural Language Processing",
+  "Machine Learning",
+  "Data Analysis",
+];
+
+const COMMON_ROLES_SUGGESTIONS = [
+  "ML / AI Engineer",
+  "Full-Stack Developer",
+  "Frontend Developer",
+  "Backend Engineer",
+  "UI/UX Designer",
+  "Product Manager",
+  "Data Scientist",
+  "Smart Contract Developer",
+  "Embedded Systems Engineer",
+  "Research Lead",
+];
+
+export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
+  isOpen,
+  onClose,
+  onSaveProject,
+  onFindTeamForProject,
+  authorName,
+  authorDepartment,
+}) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [projectType, setProjectType] = useState<ProjectType>("Hackathon");
+  const [domain, setDomain] = useState("Healthcare AI");
+  const [requiredTeamSize, setRequiredTeamSize] = useState(4);
+  const [duration, setDuration] = useState("36 Hours");
+  const [weeklyCommitment, setWeeklyCommitment] = useState(15);
+  const [experienceRequired, setExperienceRequired] = useState<ExperienceLevel | "Any">("Intermediate");
+
+  // Skills and Roles states
+  const [requiredSkills, setRequiredSkills] = useState<string[]>(["Python", "PyTorch"]);
+  const [newReqSkill, setNewReqSkill] = useState("");
+
+  const [preferredSkills, setPreferredSkills] = useState<string[]>(["React", "UI/UX Design"]);
+  const [newPrefSkill, setNewPrefSkill] = useState("");
+
+  const [requiredRoles, setRequiredRoles] = useState<string[]>([
+    "ML / AI Engineer",
+    "Frontend Developer",
+  ]);
+  const [newReqRole, setNewReqRole] = useState("");
+
+  // AI Extraction state
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiAnalysisResult, setAiAnalysisResult] = useState<AIAnalysisResult | null>(null);
+  const [aiConfirmed, setAiConfirmed] = useState(false);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+
+  if (!isOpen) return null;
+
+  // AI Analysis Trigger
+  const handleAnalyzeWithAI = async () => {
+    if (!description.trim() || description.length < 15) {
+      setAnalysisError("Please provide a project description (at least 15 characters) so AI can analyze requirements.");
+      return;
+    }
+
+    setAnalysisError(null);
+    setIsAnalyzing(true);
+
+    try {
+      const response = await fetch("/api/analyze-project", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: title || "New Project",
+          description,
+          projectType,
+        }),
+      });
+
+      const resData = await response.json();
+
+      if (resData.success && resData.data) {
+        const extracted: AIAnalysisResult = resData.data;
+        setAiAnalysisResult(extracted);
+        setAiConfirmed(false);
+
+        // Pre-fill form fields with extracted values
+        if (extracted.domain) setDomain(extracted.domain);
+        if (extracted.requiredSkills?.length) setRequiredSkills(extracted.requiredSkills);
+        if (extracted.preferredSkills?.length) setPreferredSkills(extracted.preferredSkills);
+        if (extracted.recommendedRoles?.length) setRequiredRoles(extracted.recommendedRoles);
+        if (extracted.weeklyCommitment) setWeeklyCommitment(extracted.weeklyCommitment);
+        if (extracted.suggestedTeamSize) setRequiredTeamSize(extracted.suggestedTeamSize);
+        if (extracted.suggestedDuration) setDuration(extracted.suggestedDuration);
+        if (extracted.experienceLevel) {
+          setExperienceRequired(
+            (extracted.experienceLevel as ExperienceLevel) || "Intermediate"
+          );
+        }
+      } else {
+        setAnalysisError("Could not extract requirements automatically. You can fill the fields manually.");
+      }
+    } catch (err: any) {
+      console.error("AI Analysis error:", err);
+      setAnalysisError("Network or analysis error. Please fill requirements manually.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleAddSkill = (
+    type: "required" | "preferred",
+    skillName: string
+  ) => {
+    const trimmed = skillName.trim();
+    if (!trimmed) return;
+    if (type === "required") {
+      if (!requiredSkills.includes(trimmed)) {
+        setRequiredSkills([...requiredSkills, trimmed]);
+      }
+      setNewReqSkill("");
+    } else {
+      if (!preferredSkills.includes(trimmed)) {
+        setPreferredSkills([...preferredSkills, trimmed]);
+      }
+      setNewPrefSkill("");
+    }
+  };
+
+  const handleRemoveSkill = (type: "required" | "preferred", skill: string) => {
+    if (type === "required") {
+      setRequiredSkills(requiredSkills.filter((s) => s !== skill));
+    } else {
+      setPreferredSkills(preferredSkills.filter((s) => s !== skill));
+    }
+  };
+
+  const handleAddRole = (roleName: string) => {
+    const trimmed = roleName.trim();
+    if (!trimmed) return;
+    if (!requiredRoles.includes(trimmed)) {
+      setRequiredRoles([...requiredRoles, trimmed]);
+    }
+    setNewReqRole("");
+  };
+
+  const handleRemoveRole = (role: string) => {
+    setRequiredRoles(requiredRoles.filter((r) => r !== role));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim() || !description.trim()) return;
+
+    const newProject: Project = {
+      id: `proj-${Date.now()}`,
+      title: title.trim(),
+      description: description.trim(),
+      projectType,
+      domain,
+      requiredTeamSize: Number(requiredTeamSize) || 4,
+      duration: duration.trim() || "1 Semester",
+      weeklyCommitment: Number(weeklyCommitment) || 15,
+      requiredSkills: requiredSkills.length > 0 ? requiredSkills : ["Python", "General Engineering"],
+      preferredSkills: preferredSkills,
+      requiredRoles: requiredRoles.length > 0 ? requiredRoles : ["Lead Developer", "Contributor"],
+      experienceRequired,
+      createdAt: new Date().toISOString().split("T")[0],
+      authorName,
+      authorDepartment,
+      selectedTeamMemberIds: [],
+      isOwner: true,
+      aiExtracted: !!aiAnalysisResult,
+      status: "Recruiting",
+    };
+
+    onSaveProject(newProject);
+    onClose();
+  };
+
+  // Quick Preset Sample Prompts for Instant Demo testing
+  const loadPreset = (presetType: "crop" | "health" | "climate" | "fintech") => {
+    if (presetType === "crop") {
+      setTitle("AgriVision: Crop Leaf Disease Detector");
+      setDescription("Build an AI system that detects diseases in crop leaves using images.");
+      setProjectType("Hackathon");
+    } else if (presetType === "health") {
+      setTitle("CardioLens: AI Heart Arrhythmia Monitor");
+      setDescription("Building a real-time ECG telemetry analysis web app using CNN-LSTM neural networks to flag cardiac anomalies from wearable pulse monitors. We need to deploy a FastAPI backend and an intuitive doctor dashboard in React.");
+      setProjectType("Hackathon");
+    } else if (presetType === "climate") {
+      setTitle("GridEco: Smart Microgrid Optimizer");
+      setDescription("An IoT and full-stack platform for campus solar microgrids to forecast battery storage demand and minimize peak grid power tariffs using reinforcement learning and real-time sensor streams.");
+      setProjectType("Startup");
+    } else {
+      setTitle("ZeroKnowledge Ledger: Private Payroll Protocol");
+      setDescription("Developing a zk-SNARK smart contract privacy layer on Ethereum for anonymous student payroll disbursements and university grant allocations without revealing wallet identities.");
+      setProjectType("Research");
+    }
+  };
+
+  const handleFindTeamDirectly = () => {
+    if (!title.trim() || !description.trim()) return;
+
+    const newProject: Project = {
+      id: `proj-${Date.now()}`,
+      title: title.trim(),
+      description: description.trim(),
+      projectType,
+      domain,
+      requiredTeamSize: Number(requiredTeamSize) || 4,
+      duration: duration.trim() || "1 Semester",
+      weeklyCommitment: Number(weeklyCommitment) || 15,
+      availabilityRequirement: aiAnalysisResult?.availabilityRequirement || `${weeklyCommitment} hours/week`,
+      requiredSkills: requiredSkills.length > 0 ? requiredSkills : ["Python", "General Engineering"],
+      preferredSkills: preferredSkills,
+      requiredRoles: requiredRoles.length > 0 ? requiredRoles : ["Lead Developer", "Contributor"],
+      experienceRequired,
+      createdAt: new Date().toISOString().split("T")[0],
+      authorName,
+      authorDepartment,
+      selectedTeamMemberIds: [],
+      isOwner: true,
+      aiExtracted: !!aiAnalysisResult,
+      status: "Recruiting",
+    };
+
+    if (onFindTeamForProject) {
+      onFindTeamForProject(newProject);
+    } else {
+      onSaveProject(newProject);
+    }
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+      <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+              <Layers className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="font-bold text-slate-900 text-lg">Create New Project</h2>
+              <p className="text-xs text-slate-500">
+                Define your vision and let Explainable AI match complementary teammates
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Scrollable Form Body */}
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-6 flex-1 text-sm">
+          {/* Preset Prompts Helper */}
+          <div className="bg-indigo-50/60 border border-indigo-100 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
+            <span className="text-xs font-semibold text-indigo-900 flex items-center space-x-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+              <span>Quick Demo Idea Presets:</span>
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                type="button"
+                id="btn-preset-crop-disease"
+                onClick={() => loadPreset("crop")}
+                className="text-xs bg-white text-emerald-700 hover:bg-emerald-50 font-semibold px-2.5 py-1 rounded-md border border-emerald-200 shadow-2xs transition-colors cursor-pointer"
+              >
+                🌱 Crop Disease AI
+              </button>
+              <button
+                type="button"
+                onClick={() => loadPreset("health")}
+                className="text-xs bg-white text-indigo-700 hover:bg-indigo-50 font-medium px-2.5 py-1 rounded-md border border-indigo-200 shadow-2xs transition-colors cursor-pointer"
+              >
+                🏥 Healthcare AI
+              </button>
+              <button
+                type="button"
+                onClick={() => loadPreset("climate")}
+                className="text-xs bg-white text-indigo-700 hover:bg-indigo-50 font-medium px-2.5 py-1 rounded-md border border-indigo-200 shadow-2xs transition-colors cursor-pointer"
+              >
+                ⚡ Clean Energy
+              </button>
+              <button
+                type="button"
+                onClick={() => loadPreset("fintech")}
+                className="text-xs bg-white text-indigo-700 hover:bg-indigo-50 font-medium px-2.5 py-1 rounded-md border border-indigo-200 shadow-2xs transition-colors cursor-pointer"
+              >
+                🔒 Web3 & Privacy
+              </button>
+            </div>
+          </div>
+
+          {/* Title & Type */}
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+            <div className="sm:col-span-8">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Project Title <span className="text-rose-500">*</span>
+              </label>
+              <input
+                id="create-project-input-title"
+                type="text"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="e.g., NeuroScan AI: Early Alzheimer's Detection"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:bg-white focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 text-sm font-medium"
+              />
+            </div>
+
+            <div className="sm:col-span-4">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Project Type <span className="text-rose-500">*</span>
+              </label>
+              <select
+                id="create-project-select-type"
+                value={projectType}
+                onChange={(e) => setProjectType(e.target.value as ProjectType)}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:bg-white focus:border-indigo-600 text-sm font-medium"
+              >
+                {PROJECT_TYPE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Description & Analyze with AI Section */}
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                Project Description <span className="text-rose-500">*</span>
+              </label>
+              <span className="text-[11px] text-slate-400">
+                Explain the problem, tech stack, and goals
+              </span>
+            </div>
+            <textarea
+              id="create-project-input-description"
+              rows={3}
+              required
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe your technical architecture, objectives, and what kind of collaborators you are looking for..."
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:bg-white focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 text-sm"
+            />
+
+            {/* Prominent Analyze with AI Button */}
+            <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2">
+              <button
+                type="button"
+                id="btn-analyze-with-ai"
+                onClick={handleAnalyzeWithAI}
+                disabled={isAnalyzing}
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-50"
+              >
+                {isAnalyzing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>AI Analyzing Project Requirements...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" />
+                    <span>Analyze with AI</span>
+                  </>
+                )}
+              </button>
+
+              <span className="text-xs text-slate-500">
+                ⚡ Auto-extracts domain, required skills, roles, and weekly hours
+              </span>
+            </div>
+
+            {analysisError && (
+              <div className="mt-2 text-xs text-rose-600 bg-rose-50 p-2.5 rounded-lg border border-rose-200 flex items-center space-x-1.5">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{analysisError}</span>
+              </div>
+            )}
+          </div>
+
+          {/* AI Project Analysis Card (Core Feature 1) */}
+          {aiAnalysisResult && (
+            <div
+              id="ai-project-analysis-card"
+              className="bg-slate-900 text-white rounded-2xl p-5 border border-indigo-500/50 shadow-xl space-y-4 animate-in fade-in duration-200"
+            >
+              <div className="flex items-start justify-between gap-3 border-b border-slate-800 pb-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-7 h-7 rounded-lg bg-indigo-600/30 border border-indigo-500/50 flex items-center justify-center text-indigo-300">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-indigo-200">
+                      AI Project Analysis
+                    </h3>
+                    <p className="text-[11px] text-slate-400">
+                      Inferred technical criteria & complementary team blueprint
+                    </p>
+                  </div>
+                </div>
+                <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-md border border-emerald-500/30 flex items-center space-x-1">
+                  <CheckCircle2 className="w-3 h-3" />
+                  <span>AI Inferred</span>
+                </span>
+              </div>
+
+              {/* Rationale / Summary */}
+              <p className="text-xs text-slate-300 italic bg-slate-800/90 p-3 rounded-xl border border-slate-700/80 leading-relaxed">
+                "{aiAnalysisResult.aiSummary}"
+              </p>
+
+              {/* Domain, Experience, Availability Key Badges */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                <div className="bg-slate-800/90 p-2.5 rounded-xl border border-slate-700">
+                  <span className="text-slate-400 text-[10px] block font-bold uppercase tracking-wider">Domain</span>
+                  <span className="font-bold text-indigo-300 text-xs block mt-0.5">{aiAnalysisResult.domain}</span>
+                </div>
+                <div className="bg-slate-800/90 p-2.5 rounded-xl border border-slate-700">
+                  <span className="text-slate-400 text-[10px] block font-bold uppercase tracking-wider">Experience</span>
+                  <span className="font-bold text-emerald-300 text-xs block mt-0.5">{aiAnalysisResult.experienceLevel}</span>
+                </div>
+                <div className="bg-slate-800/90 p-2.5 rounded-xl border border-slate-700">
+                  <span className="text-slate-400 text-[10px] block font-bold uppercase tracking-wider">Availability</span>
+                  <span className="font-bold text-amber-300 text-xs block mt-0.5">
+                    {aiAnalysisResult.availabilityRequirement || `${aiAnalysisResult.weeklyCommitment} hours/week`}
+                  </span>
+                </div>
+              </div>
+
+              {/* Detailed Skills & Roles Breakdown */}
+              <div className="space-y-2.5 bg-slate-800/60 p-3.5 rounded-xl border border-slate-700/60 text-xs">
+                {/* Required Skills */}
+                <div>
+                  <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider block mb-1">
+                    Required Skills (40% Match Weight)
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {aiAnalysisResult.requiredSkills.map((sk) => (
+                      <span
+                        key={sk}
+                        className="bg-indigo-500/20 text-indigo-200 border border-indigo-500/40 text-[11px] font-semibold px-2 py-0.5 rounded-md"
+                      >
+                        {sk}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Preferred Skills */}
+                {aiAnalysisResult.preferredSkills && aiAnalysisResult.preferredSkills.length > 0 && (
+                  <div>
+                    <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider block mb-1">
+                      Preferred Skills
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {aiAnalysisResult.preferredSkills.map((sk) => (
+                        <span
+                          key={sk}
+                          className="bg-slate-700 text-slate-300 border border-slate-600 text-[11px] font-medium px-2 py-0.5 rounded-md"
+                        >
+                          {sk}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Recommended Roles */}
+                {aiAnalysisResult.recommendedRoles && aiAnalysisResult.recommendedRoles.length > 0 && (
+                  <div>
+                    <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider block mb-1">
+                      Recommended Team Roles
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {aiAnalysisResult.recommendedRoles.map((role) => (
+                        <span
+                          key={role}
+                          className="bg-blue-500/20 text-blue-200 border border-blue-500/40 text-[11px] font-semibold px-2 py-0.5 rounded-md"
+                        >
+                          {role}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons for AI Card: "Edit Requirements" and "Find My Team" */}
+              <div className="pt-2 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <span className="text-slate-400 text-[11px]">
+                  Review the AI-generated requirements above before matching.
+                </span>
+                <div className="flex items-center space-x-2.5 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    id="btn-edit-requirements"
+                    onClick={() => {
+                      // Smoothly focus or scroll down to the manual editing fields
+                      const manualSection = document.getElementById("manual-project-fields");
+                      if (manualSection) {
+                        manualSection.scrollIntoView({ behavior: "smooth" });
+                      }
+                      setAiConfirmed(true);
+                    }}
+                    className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-colors cursor-pointer text-center"
+                  >
+                    Edit Requirements
+                  </button>
+                  <button
+                    type="button"
+                    id="btn-find-my-team-from-ai"
+                    onClick={handleFindTeamDirectly}
+                    className="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white text-xs font-bold shadow-sm transition-all cursor-pointer flex items-center justify-center space-x-1.5"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Find My Team</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div id="manual-project-fields" className="space-y-6 pt-2">
+
+          {/* Domain & Duration Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+            <div className="sm:col-span-6">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Domain / Industry <span className="text-rose-500">*</span>
+              </label>
+              <select
+                id="create-project-select-domain"
+                value={domain}
+                onChange={(e) => setDomain(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:bg-white focus:border-indigo-600 text-sm font-medium"
+              >
+                {DOMAIN_OPTIONS.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Required Team Size
+              </label>
+              <input
+                type="number"
+                min={2}
+                max={8}
+                value={requiredTeamSize}
+                onChange={(e) => setRequiredTeamSize(Number(e.target.value))}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm font-medium"
+              />
+            </div>
+
+            <div className="sm:col-span-3">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Duration
+              </label>
+              <input
+                type="text"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                placeholder="e.g. 36 Hours"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm font-medium"
+              />
+            </div>
+          </div>
+
+          {/* Commitment & Experience Level */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Weekly Commitment (Hours / Week)
+              </label>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="range"
+                  min={5}
+                  max={35}
+                  step={1}
+                  value={weeklyCommitment}
+                  onChange={(e) => setWeeklyCommitment(Number(e.target.value))}
+                  className="flex-1 accent-indigo-600"
+                />
+                <span className="bg-slate-100 text-slate-800 font-bold px-3 py-1.5 rounded-lg text-xs w-20 text-center">
+                  {weeklyCommitment} hrs/wk
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Experience Level Required
+              </label>
+              <select
+                value={experienceRequired}
+                onChange={(e) =>
+                  setExperienceRequired(e.target.value as ExperienceLevel | "Any")
+                }
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm font-medium"
+              >
+                <option value="Any">Any Level</option>
+                <option value="Beginner">Beginner Friendly</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced / Senior</option>
+                <option value="Expert">Expert / Specialized</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Required Skills Matrix */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Required Skills (Hard Criteria - 40% Match Weight)
+            </label>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {requiredSkills.map((sk) => (
+                <span
+                  key={sk}
+                  className="bg-indigo-50 text-indigo-800 text-xs font-semibold px-2.5 py-1 rounded-lg border border-indigo-200 flex items-center space-x-1"
+                >
+                  <span>{sk}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSkill("required", sk)}
+                    className="text-indigo-400 hover:text-indigo-700 cursor-pointer ml-1"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={newReqSkill}
+                onChange={(e) => setNewReqSkill(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddSkill("required", newReqSkill);
+                  }
+                }}
+                placeholder="Type skill & press Enter (e.g. PyTorch)"
+                className="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+              />
+              <button
+                type="button"
+                onClick={() => handleAddSkill("required", newReqSkill)}
+                className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
+              >
+                + Add
+              </button>
+            </div>
+
+            {/* Quick skill pills */}
+            <div className="flex flex-wrap gap-1 mt-2">
+              <span className="text-[11px] text-slate-400 mr-1">Suggestions:</span>
+              {COMMON_SKILLS_SUGGESTIONS.slice(0, 7).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => handleAddSkill("required", s)}
+                  className="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-0.5 rounded cursor-pointer"
+                >
+                  +{s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Preferred Skills */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Preferred / Nice-to-Have Skills
+            </label>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {preferredSkills.map((sk) => (
+                <span
+                  key={sk}
+                  className="bg-slate-100 text-slate-700 text-xs font-medium px-2.5 py-1 rounded-lg border border-slate-200 flex items-center space-x-1"
+                >
+                  <span>{sk}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSkill("preferred", sk)}
+                    className="text-slate-400 hover:text-slate-600 cursor-pointer ml-1"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={newPrefSkill}
+                onChange={(e) => setNewPrefSkill(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddSkill("preferred", newPrefSkill);
+                  }
+                }}
+                placeholder="Add preferred skill (e.g. Docker, UI/UX Design)"
+                className="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+              />
+              <button
+                type="button"
+                onClick={() => handleAddSkill("preferred", newPrefSkill)}
+                className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
+              >
+                + Add
+              </button>
+            </div>
+          </div>
+
+          {/* Required Roles Matrix */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Required Roles on the Team
+            </label>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {requiredRoles.map((role) => (
+                <span
+                  key={role}
+                  className="bg-blue-50 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-lg border border-blue-200 flex items-center space-x-1"
+                >
+                  <span>{role}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveRole(role)}
+                    className="text-blue-400 hover:text-blue-700 cursor-pointer ml-1"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={newReqRole}
+                onChange={(e) => setNewReqRole(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddRole(newReqRole);
+                  }
+                }}
+                placeholder="Type role & press Enter (e.g. UI/UX Designer, ML Engineer)"
+                className="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+              />
+              <button
+                type="button"
+                onClick={() => handleAddRole(newReqRole)}
+                className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer"
+              >
+                + Add Role
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-1 mt-2">
+              <span className="text-[11px] text-slate-400 mr-1">Suggestions:</span>
+              {COMMON_ROLES_SUGGESTIONS.slice(0, 6).map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => handleAddRole(r)}
+                  className="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-600 px-2 py-0.5 rounded cursor-pointer"
+                >
+                  +{r}
+                </button>
+              ))}
+            </div>
+          </div>
+          </div>
+
+          {/* Form Actions Footer */}
+          <div className="pt-4 border-t border-slate-200 flex items-center justify-end space-x-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition-colors cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              id="btn-save-project-submit"
+              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition-all duration-150 active:scale-98 cursor-pointer flex items-center space-x-1.5"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Save Project</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
